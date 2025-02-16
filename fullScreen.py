@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import *
 from PIL import Image, ImageTk
 
-# Create the main window
 parent = tk.Tk()
 parent.title("Splash Screen")
 
@@ -29,24 +28,25 @@ photo = ImageTk.PhotoImage(resized_image) #open photo inside window
 label = tk.Label(parent, image = photo, bg="black") #setting window background to black which screen will fade to
 label.pack(fill=BOTH, expand=True) #pack image in to be fullscreen
 
+
 def fade_image(alpha=255):
     if alpha >= 0:
-        faded = image_copy.copy()
-        faded = faded.resize((screen_width, screen_height), Image.Resampling.LANCZOS)
+        faded = resized_image.copy()
+        #faded = faded.resize((screen_width, screen_height), Image.Resampling.LANCZOS)
         faded.putalpha(alpha)  # apply transparency
         new_photo = ImageTk.PhotoImage(faded)
         label.config(image=new_photo)
         label.image = new_photo  # prevent garbage collection
         parent.after(50, lambda: fade_image(alpha - 10))  # reduce alpha gradually via recursion
 
+def screenRun():
+    parent.after(1000, fade_image) #fade image to black
+    parent.after(10000, lambda: parent.destroy()) #cloe window after 10 seconds
+    # Create the main window
+    # Start the Tkinter event loop
+    parent.mainloop()
 
 
-parent.after(1000, fade_image) #fade image to black
-parent.after(10000, lambda: parent.destroy()) #cloe window after 10 seconds
 
 
-
-
-
-# Start the Tkinter event loop
-parent.mainloop()
+screenRun()
