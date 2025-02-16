@@ -1,5 +1,6 @@
 "requires pip install psycopg2-binary"
 import psycopg2
+import * from player
 
 "Function to get connection to the photon database"
 def getConnection():
@@ -24,30 +25,30 @@ def getAllPlayers():
 	return data
 
 "Parameters: id of player you're looking for"
-"Return: Tuple of a boolean indicating if the player was in the database and the players codename if found"	
+"Return: A Player with either the requested id and codename, or -1 id and '' codename"	
 def queryId(id):
 	conn = getConnection()
 	if not conn:
-		return (False, 'Failure')
+		return Player(-1, '', 0, 0)
 	curr = conn.cursor()
 	curr.execute(f"SELECT * FROM players WHERE id = {id};")
 	data = curr.fetchall()
 	conn.close()
 	if len(data) > 0:
-		return (True, data[0][1])
+		return Player(data[0], data [1], 0, 0)
 	else:
-		return (False, '')
+		return Player(-1, '', 0, 0)
 
 "Parameters: id and codename of player you wish to insert into the database"
-"Returns: if a connection to the SQL database was established"
+"Returns: a New Player with "
 def addPlayer(id, codename):
 	conn = getConnection()
 	if not conn:
-		return False
+		return Player(-1, '', 0, 0)
 	curr = conn.cursor()
 	curr.execute(f"INSERT INTO players VALUES ({id}, '{codename}');")
 	conn.commit()
-	return True
+	return Player(id, codename, 0, 0)
 
 "Parameters: id to be deleted"
 "Returns: if a connection to the SQL database was established"
