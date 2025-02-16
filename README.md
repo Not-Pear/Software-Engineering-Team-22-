@@ -8,3 +8,4 @@ Sarah Smith: Sarah Smith,
 
 To install tkinker: pip install tk
 To install PIP: pip install pillow
+To install psycopg2 to interface with psql: pip install psycopg2-binary 
