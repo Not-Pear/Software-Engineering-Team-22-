@@ -1,6 +1,6 @@
 "requires pip install psycopg2-binary"
 import psycopg2
-import * from player
+from player import *
 
 "Function to get connection to the photon database"
 def getConnection():
@@ -35,7 +35,7 @@ def queryId(id):
 	data = curr.fetchall()
 	conn.close()
 	if len(data) > 0:
-		return Player(data[0], data [1], 0, 0)
+		return Player(data[0][0],data [0][1], 0, 0)
 	else:
 		return Player(-1, '', 0, 0)
 

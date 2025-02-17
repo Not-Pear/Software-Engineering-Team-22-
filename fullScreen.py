@@ -41,12 +41,8 @@ def fade_image(alpha=255):
 
 def screenRun():
     parent.after(1000, fade_image) #fade image to black
-    parent.after(10000, lambda: parent.destroy()) #cloe window after 10 seconds
+    parent.after(5000, lambda: parent.destroy()) #cloe window after 10 seconds
     # Create the main window
     # Start the Tkinter event loop
     parent.mainloop()
 
-
-
-
-screenRun()

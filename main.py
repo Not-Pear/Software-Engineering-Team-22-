@@ -1,11 +1,15 @@
+from fullScreen import *
 from socketComms import SocketComms
+import urllib.error
+import time
 
 
-comms = SocketComms("127.0.0.1", 7500, 7501)
+comms = SocketComms('127.0.0.1', 7500, 7501)
 comms.start()
+screenRun()
+time.sleep(6)
+
+import entryscreen
+entryscreen.start(comms)
 
 
-while True:
-    #just for testing
-    comms.send(1, 5)
-    comms.send(100, 24)

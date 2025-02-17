@@ -23,5 +23,5 @@ class Player:
 		def setEquipmentId(self, equipmentid):
 			self.equipmentid = equipmentid
 			
-		def setPoints(self, points)
+		def setPoints(self, points):
 			self.points = points
