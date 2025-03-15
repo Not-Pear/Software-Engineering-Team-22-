@@ -60,41 +60,57 @@ def start(comms):
             print(f"Button {self.getID()} clicked. Player ID: {player_id}")
 
             username = query_username(player_id)  
-            
             username_entry.delete(0, END)
             username_entry.insert(0, username)
-            newer = Tk()
-            newer.geometry('200x200')
+
+            # make new window 
+            newer = Toplevel(s)
+            newer.geometry('300x300')
             newer.configure(bg="#FFFFFF")
-            newer.title("Gimme some Equipment ID")
+            newer.title("Equipment ID")
+
+            #create canvas 
+            newercanvas = Canvas(newer, width=300, height=300, bg="white")
+            newercanvas.pack()
+            #text box to tell user what to do
+            equpipmentprompt = Label(newer,text="Please Enter the Equipment ID")
+            newercanvas.create_window(150,100,window=equpipmentprompt)
+            #spot for new username 
             equipmentid = Entry(newer, width=10)
-            equipmentid.pack()
+            newercanvas.create_window(150,150, window=equipmentid)
             def addedepuipmentid():
                 equipment_id.append(equipmentid.get())
                 newer.destroy()
-            done = Button(newer, text="Okay", command=addedepuipmentid)
-            done.pack()
+            done = Button(newer, text="Submit", command=addedepuipmentid)
+            newercanvas.create_window(150,200, window=done)
             newer.wait_window()
             comms.send(player_id, equipment_id[-1])
             
     
     def query_username(player_id):
         player = photonDB.queryId(player_id)
-        if player.id == -1:
-            new = Tk()
-            new.geometry('200x200')
+        if player.id == -1: #if player does not exist 
+            new = Toplevel(s) # make pop up window
+            new.geometry('300x300')
             new.configure(bg="#FFFFFF")
             new.title("Create New Player")
+
+            # make a canvas 
+            newcanvas = Canvas(new, width=300, height=300, bg="white")
+            newcanvas.pack()
+
+            #insert text to tell user to enter new username
+            newcanvas.create_text(150,100,text="Please Enter New Username")
+
             new_name = Entry(new, width=10)
-            new_name.pack()
-            
+            newcanvas.create_window(150,150, window=new_name)
             def added():
                 new_players.append(new_name.get())
                 photonDB.addPlayer(player_id, new_players[-1])
                 new.destroy()
             
-            done = Button(new, text="Okay", command=added)
-            done.pack()
+            done = Button(new, text="Submit", command=added)
+            newcanvas.create_window(150,200, window=done)
             new.wait_window()
             print(f"New players: {new_players}")
             if new_players:
