@@ -2,14 +2,18 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import scrolledtext
 from socketComms import SocketComms
- 
+
 
 class ActionScreen: 
     def __init__(self, initial_time, comms):
         self.parent = tk.Tk()
         self.parent.title("Action Screen")
-        self.parent.attributes('-fullscreen', True)
-        
+        #getting screen width and height of display
+        self.width= self.parent.winfo_screenwidth() 
+        self.height= self.parent.winfo_screenheight()
+        #setting tkinter window size
+        self.parent.geometry("%dx%d" % (self.width, self.height))  
+
         self.comms = comms
 
         self.action_text_box = tk.Text(self.parent)
