@@ -24,6 +24,6 @@ while(True):
             print("Game Start")
         else:
             print(whoGotHit  + " is active")
-
-    print(whoSent + " hit: " + whoGotHit)
+    else:
+        print(whoSent + " hit: " + whoGotHit)
     
