@@ -37,7 +37,7 @@ def start(comms):
     new_players = []
     new_player_count = 0
     equipment_id = []
-    
+    players = []
     class buttonID(Button):
         def __init__(self, root, id, col, text, command):
             super().__init__(root, text=text, command=self.on_button_click)
@@ -59,10 +59,12 @@ def start(comms):
             player_id = entry.get()
             print(f"Button {self.getID()} clicked. Player ID: {player_id}")
 
-            username = query_username(player_id)  
+            player = query_username(player_id)  
+            print(f"Player codename: {player.getCodeName()}")
             username_entry.delete(0, END)
-            username_entry.insert(0, username)
-
+            username_entry.insert(0, player.getCodeName())
+            player.setTeam(self.col)
+            
             # make new window 
             newer = Toplevel(s)
             newer.geometry('300x300')
@@ -80,6 +82,8 @@ def start(comms):
             newercanvas.create_window(150,150, window=equipmentid)
             def addedepuipmentid():
                 equipment_id.append(equipmentid.get())
+                player.setEquipmentId(equipment_id[-1])
+                players.append(player)
                 comms.sendEqpID(equipment_id[-1])
                 newer.destroy()
             done = Button(newer, text="Submit", command=addedepuipmentid)
@@ -106,6 +110,7 @@ def start(comms):
             newcanvas.create_window(150,150, window=new_name)
             def added():
                 new_players.append(new_name.get())
+                player.setCodeName(new_players[-1])
                 photonDB.addPlayer(player_id, new_players[-1])
                 new.destroy()
             
@@ -114,11 +119,12 @@ def start(comms):
             new.wait_window()
             print(f"New players: {new_players}")
             if new_players:
-                return new_players[-1]
+                return player
             else:
                 return ""
         else:
-            return player.codename if player.codename else ""
+            # return player.codename if player.codename else ""
+            return player
     
     for i in range(15):
         aentry = Entry(s, width=10)
@@ -155,6 +161,26 @@ def start(comms):
         print("Clearing screen")
     def startActionScreen():
         actionScreen = ActionScreen(60, comms)
+        redCounter = 0
+        greenCounter = 0
+
+        for player in players:
+            if player.getTeam() == "red":
+                actionScreen.update_entries(player.getTeam(), redCounter, player.getCodeName(), player.getPoints())
+                redCounter+=1
+            if player.getTeam() == "green":
+                actionScreen.update_entries(player.getTeam(), greenCounter, player.getCodeName(), player.getPoints())
+                greenCounter+=1
+
+
+        # print(f"{red_usernames}")
+        
+        # for i in green_usernames:
+        #     actionScreen.update_entries("green", 0, green_usernames[i], 0)
+        # for j in red_usernames:
+        #     actionScreen.update_entries("red", 0, red_usernames[j], 0)
+
+
         actionScreen.run()
 
     button_config = [

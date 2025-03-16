@@ -4,24 +4,31 @@ class Player:
 		self.codename = codename
 		self.equipmentid= equipmentid
 		self.points = points
+		self.team = None
 		
-		def getId(self):
-			return self.id
+	def getId(self):
+		return self.id
+	
+	def getCodeName(self):
+		return self.codename
 		
-		def getCodeName(self):
-			return self.codename
-			
-		def getequipmentid(self):
-			return self.equipmentid
+	def getequipmentid(self):
+		return self.equipmentid
+	
+	def getPoints(self):
+		return self.points
+
+	def getTeam(self):
+		return self.team
+
+	def setCodeName(self, codename):
+		self.codename = codename
+	
+	def setEquipmentId(self, equipmentid):
+		self.equipmentid = equipmentid
 		
-		def getPoints(self):
-			return self.points
-			
-		def setCodeName(self, codename):
-			self.codename = codename
-		
-		def setEquipmentId(self, equipmentid):
-			self.equipmentid = equipmentid
-			
-		def setPoints(self, points):
-			self.points = points
+	def setPoints(self, points):
+		self.points = points
+
+	def setTeam(self, team):
+		self.team = team

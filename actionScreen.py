@@ -131,7 +131,8 @@ class ActionScreen:
     def run(self):
         self.testAutoScrollTxtBox()
         self.countdown()
-        self.update_entries("green", 0, self.test_teams[0], 0)  #testing
-        self.update_entries("red", 0, self.test_teams[1], 50)
-        
+        # self.update_entries("green", 0, self.test_teams[0], 0)  #testing
+        # self.update_entries("red", 0, self.test_teams[1], 50)
+        #self.update_entries("green", 0, "Tom", 0)
+
         self.parent.mainloop()

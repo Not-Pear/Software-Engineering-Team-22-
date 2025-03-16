@@ -4,7 +4,7 @@ import urllib.error
 import time
 
 
-comms = SocketComms('127.0.0.1')
+comms = SocketComms('127.0.0.1', 7500, 7501)
 comms.start()
 fullscreen = FullScreen()
 fullscreen.run()

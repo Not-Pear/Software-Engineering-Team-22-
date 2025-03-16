@@ -29,7 +29,7 @@ def getAllPlayers():
 def queryId(id):
 	conn = getConnection()
 	if not conn:
-		return Player(-1, '', 0, 0)
+		return Player(-1, 'defualt', 0, 0)
 	curr = conn.cursor()
 	curr.execute(f"SELECT * FROM players WHERE id = {id};")
 	data = curr.fetchall()
@@ -37,7 +37,8 @@ def queryId(id):
 	if len(data) > 0:
 		return Player(data[0][0],data [0][1], 0, 0)
 	else:
-		return Player(-1, '', 0, 0)
+		return Player(-1, 'defualt', 0, 0)
+	
 
 "Parameters: id and codename of player you wish to insert into the database"
 "Returns: a New Player with "
