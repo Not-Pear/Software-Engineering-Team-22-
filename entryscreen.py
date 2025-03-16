@@ -158,6 +158,7 @@ def start(comms):
             green_entries[i].delete(0, END)
             red_usernames[i].delete(0, END)
             green_usernames[i].delete(0, END)
+        players.clear()
         print("Clearing screen")
     def startActionScreen():
         actionScreen = ActionScreen(60, comms)
