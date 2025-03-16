@@ -2,10 +2,10 @@ import socket
 import threading
 
 class SocketComms:
-    def __init__(self, localIP, sendPort, receivePort):
+    def __init__(self, localIP):
         self.localIP = localIP
-        self.sendPort = sendPort
-        self.receivePort = receivePort
+        self.sendPort = 7500
+        self.receivePort = 7501
         self.bufferSize = 1024
         # Set up the sender
         self.sendSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -18,15 +18,21 @@ class SocketComms:
         #Send whoHit and equipmentID 
         try:
             message = f"{whoHit},{equipmentHit}".encode()  # Encode as bytes
-            self.sendSocket.sendto(message, (self.localIP, self.receivePort))
+            self.sendSocket.sendto(message, (self.localIP, self.sendPort))
             print(f"Sent: Player {whoHit} hit Equipment {equipmentHit}")
         except Exception as e:
             print(f"Send error: {e}")
     def sendStart(self):
         #Send whoHit and equipmentID 
         try:
-            message = f"{0},{202}".encode()  # Encode as bytes
-            self.sendSocket.sendto(message, (self.localIP, self.receivePort))
+            message = f"{202}".encode()  # Encode as bytes
+            self.sendSocket.sendto(message, (self.localIP, self.sendPort))
+            print(f"Sent: Code 202")
+        except Exception as e:
+            print(f"Send error: {e}")
+        try:
+            message = f"{0}, {202}".encode()  # Encode as bytes
+            self.sendSocket.sendto(message, (self.localIP, self.sendPort))
             print(f"Sent: Code 202")
         except Exception as e:
             print(f"Send error: {e}")
@@ -34,7 +40,7 @@ class SocketComms:
         #Send whoHit and equipmentID 
         try:
             message = f"{0},{eqpID}".encode()  # Encode as bytes
-            self.sendSocket.sendto(message, (self.localIP, self.receivePort))
+            self.sendSocket.sendto(message, (self.localIP, self.sendPort))
             print(f"Sent: Equipment ID {eqpID}")
         except Exception as e:
             print(f"Send error: {e}")
@@ -49,7 +55,7 @@ class SocketComms:
                     whoHit, equipmentHit = actualVals
                     if(whoHit == 0):
                         if(equipmentHit == 202):
-                            print("Game Start")
+                            print("Game Start! :D")
                         else:
                             print(equipmentHit  + " is active")
                     else:
