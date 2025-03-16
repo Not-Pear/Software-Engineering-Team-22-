@@ -8,7 +8,7 @@ class ActionScreen:
     def __init__(self, initial_time, comms):
         self.parent = tk.Tk()
         self.parent.title("Action Screen")
-        self.parent.geometry('2000x2000')
+        self.parent.attributes('-fullscreen', True)
         
         self.comms = comms
 
