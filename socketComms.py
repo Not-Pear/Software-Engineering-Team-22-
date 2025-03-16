@@ -14,7 +14,7 @@ class SocketComms:
         self.receiveSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.receiveSocket.bind((self.localIP, self.receivePort))
 
-    def send(self, whoHit, equipmentHit):
+    def sendHit(self, whoHit, equipmentHit):
         #Send whoHit and equipmentID 
         try:
             message = f"{whoHit},{equipmentHit}".encode()  # Encode as bytes
@@ -22,7 +22,22 @@ class SocketComms:
             print(f"Sent: Player {whoHit} hit Equipment {equipmentHit}")
         except Exception as e:
             print(f"Send error: {e}")
-
+    def sendStart(self):
+        #Send whoHit and equipmentID 
+        try:
+            message = f"{202}".encode()  # Encode as bytes
+            self.sendSocket.sendto(message, (self.localIP, self.receivePort))
+            print(f"Sent: Code 202")
+        except Exception as e:
+            print(f"Send error: {e}")
+    def sendEqpID(self, eqpID):
+        #Send whoHit and equipmentID 
+        try:
+            message = f"{eqpID}".encode()  # Encode as bytes
+            self.sendSocket.sendto(message, (self.localIP, self.receivePort))
+            print(f"Sent: Equipment ID {eqpID}")
+        except Exception as e:
+            print(f"Send error: {e}")
     def receive(self):
        #Listen for messages 
         while True:
