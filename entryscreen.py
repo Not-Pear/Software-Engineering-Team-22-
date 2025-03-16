@@ -2,7 +2,7 @@ from tkinter import *
 # from photonDB import query_username  # Assuming you have a function to query usernames
 from player import Player
 import photonDB
-
+from actionScreen import ActionScreen
 s = Tk()
 
 # Button class ----------------------------------------------------------------------------
@@ -80,11 +80,11 @@ def start(comms):
             newercanvas.create_window(150,150, window=equipmentid)
             def addedepuipmentid():
                 equipment_id.append(equipmentid.get())
+                comms.sendEqpID(equipment_id[-1])
                 newer.destroy()
             done = Button(newer, text="Submit", command=addedepuipmentid)
             newercanvas.create_window(150,200, window=done)
             newer.wait_window()
-            comms.send(player_id, equipment_id[-1])
             
     
     def query_username(player_id):
@@ -120,7 +120,7 @@ def start(comms):
         else:
             return player.codename if player.codename else ""
     
-    for i in range(20):
+    for i in range(15):
         aentry = Entry(s, width=10)
         canvas.create_window(50, 40 + (i * 20), window=aentry)
         red_entries.append(aentry)
@@ -132,7 +132,7 @@ def start(comms):
         save_red = buttonID(s, i, "red", text="Save", command=None)
         canvas.create_window(230, 40 + (i * 20), window=save_red)
     
-    for i in range(20):
+    for i in range(15):
         entry = Entry(s, width=10)
         canvas.create_window(300, 40 + (i * 20), window=entry)
         green_entries.append(entry)
@@ -147,16 +147,18 @@ def start(comms):
     def do_nothing():
         print("Button Clicked")
     def clear(): 
-        for i in range(20): 
+        for i in range(15): 
             red_entries[i].delete(0, END)
             green_entries[i].delete(0, END)
             red_usernames[i].delete(0, END)
             green_usernames[i].delete(0, END)
         print("Clearing screen")
-
+    def startActionScreen():
+        actionScreen = ActionScreen(60, comms)
+        actionScreen.run()
 
     button_config = [
-        ("F1\nEdit\nGame", 0,do_nothing, "<F1>"), ("F2\nGame\nParameters", 70,do_nothing, "<F2>"), ("F3\nStart\nGame", 140,do_nothing, "<F3>"),
+        ("F1\nEdit\nGame", 0,do_nothing, "<F1>"), ("F2\nGame\nParameters", 70,do_nothing, "<F2>"), ("F3\nStart\nGame", 140, startActionScreen, "<F3>"),
         ("F5\nPreEntered\nGames", 280,do_nothing, "<F5>"), ("F7\n", 420,do_nothing, "<F7>"), ("F8\nView\nGame", 490,do_nothing, "<F8>"),
         ("F10\nFlick\nSync", 630,do_nothing, "<F10>"), ("F12\nClear\nGame", 730,clear, "<F12>")
     ]

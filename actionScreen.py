@@ -1,12 +1,16 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import scrolledtext
+from socketComms import SocketComms
+ 
 
 class ActionScreen: 
-    def __init__(self, initial_time):
+    def __init__(self, initial_time, comms):
         self.parent = tk.Tk()
         self.parent.title("Action Screen")
-        self.parent.geometry('1000x1000')
+        self.parent.geometry('2000x2000')
+        
+        self.comms = comms
 
         self.action_text_box = tk.Text(self.parent)
         self.action_text_box = scrolledtext.ScrolledText(self.parent, height = 5, width = 50, wrap = "word")
@@ -28,7 +32,7 @@ class ActionScreen:
         self.green_text_boxes = {}
         self.test_teams = ["Bob", "Jimbob", "Jimmybimbob"]
 
-        for i in range(20):
+        for i in range(15):
             self.green_player_score_label = tk.Label(self.green_team_score_frame, text=f"Score:", fg = "green")
             self.green_player_score_label.grid(row=i, column=0, padx=5, pady=2, sticky="w")  # Align left
             self.green_textbox_scores = tk.Entry(self.green_team_score_frame, width = 15)
@@ -46,7 +50,7 @@ class ActionScreen:
 
 
         self.red_text_boxes = {}
-        for j in range(20):
+        for j in range(15):
             self.red_player_label = tk.Label(self.red_team_frame, text=f"Player {j+1}:", fg = "red")
             self.red_player_label.grid(row=j, column=0, padx=5, pady=2, sticky="w")  # Align left
 
@@ -90,6 +94,7 @@ class ActionScreen:
             self.parent.after(1000, self.countdown)  # Use self.parent.after
         elif self.remaining_time == 0:
             self.time_label.config(text="Game Start!", fg="green")
+            self.comms.sendStart()
             self.is_running = False
 
     def update_entries(self, team, player_num, new_name=None, new_score=None):
