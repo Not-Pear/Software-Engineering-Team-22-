@@ -98,9 +98,9 @@ def start(comms):
             # make a canvas 
             newcanvas = Canvas(new, width=300, height=300, bg="white")
             newcanvas.pack()
-
+            
             #insert text to tell user to enter new username
-            newcanvas.create_text(150,100,text="Please Enter New Username")
+            newcanvas.create_text(150,100,text="Please Enter New Username", fill="black")
 
             new_name = Entry(new, width=10)
             newcanvas.create_window(150,150, window=new_name)
@@ -146,16 +146,20 @@ def start(comms):
     
     def do_nothing():
         print("Button Clicked")
+    def clear(): 
+        print("Clearing screen")
 
     button_config = [
-        ("F1\nEdit\nGame", 0), ("F2\nGame\nParameters", 70), ("F3\nStart\nGame", 140),
-        ("F5\nPreEntered\nGames", 280), ("F7\n", 420), ("F8\nView\nGame", 490),
-        ("F10\nFlick\nSync", 630), ("F12\nClear\nGame", 730)
+        ("F1\nEdit\nGame", 0,do_nothing, "<F1>"), ("F2\nGame\nParameters", 70,do_nothing, "<F2>"), ("F3\nStart\nGame", 140,do_nothing, "<F3>"),
+        ("F5\nPreEntered\nGames", 280,do_nothing, "<F5>"), ("F7\n", 420,do_nothing, "<F7>"), ("F8\nView\nGame", 490,do_nothing, "<F8>"),
+        ("F10\nFlick\nSync", 630,do_nothing, "<F10>"), ("F12\nClear\nGame", 730,clear, "<F12>")
     ]
 
-    for text, x_pos in button_config:
-        btn = Button(s, text=text, bg="black", fg="green", command=do_nothing)
-        btn.place(x=x_pos, y=520, width=70, height=80)
+    for text, x_pos, func, key in button_config:
+        btn = Button(s, text=text, bg="black", fg="green", command=func) #make button
+        btn.place(x=x_pos, y=520, width=70, height=80) #in this specific spot
+        s.bind(key, lambda event, f=func: f()) # bound to these keys
+        
 
     s.mainloop()
 
