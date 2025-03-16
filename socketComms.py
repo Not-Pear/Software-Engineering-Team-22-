@@ -47,7 +47,14 @@ class SocketComms:
                 
                 if len(actualVals) == 2:  #check for validity
                     whoHit, equipmentHit = actualVals
-                    print(f"Received: Player {whoHit} hit Equipment {equipmentHit}.")
+                    if(whoHit == 0):
+                        if(equipmentHit == 202):
+                            print("Game Start")
+                        else:
+                            print(equipmentHit  + " is active")
+                    else:
+                        print(whoHit + " hit: " + equipmentHit)
+    
                 else:
                     print("Data is messed up:", actualVals)
             except Exception as e:
