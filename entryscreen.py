@@ -147,7 +147,13 @@ def start(comms):
     def do_nothing():
         print("Button Clicked")
     def clear(): 
+        for i in range(20): 
+            red_entries[i].delete(0, END)
+            green_entries[i].delete(0, END)
+            red_usernames[i].delete(0, END)
+            green_usernames[i].delete(0, END)
         print("Clearing screen")
+
 
     button_config = [
         ("F1\nEdit\nGame", 0,do_nothing, "<F1>"), ("F2\nGame\nParameters", 70,do_nothing, "<F2>"), ("F3\nStart\nGame", 140,do_nothing, "<F3>"),
