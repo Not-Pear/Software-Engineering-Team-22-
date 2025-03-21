@@ -14,7 +14,7 @@ sudo apt update <br/>
 sudo apt install python3 <br/>
 sudo apt install python3-pip <br/>
 pip3 install tk <br/>
-pip3 instlal pillow <br/>
+pip3 install pillow <br/>
 pip3 install psycopg2-binary <br/>
 sudo apt install python3-tk <br/>
 
