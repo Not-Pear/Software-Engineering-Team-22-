@@ -73,24 +73,39 @@ class SocketComms:
                 
                 if len(actualVals) == 2:  #check for validity
                     whoHit, equipmentHit = actualVals
-                    print(whoHit + " hit: " + equipmentHit)
-                    self.actionScreen.action_text_box.insert(tk.END, f'{whoHit} hit: {equipmentHit}\n')
-                    playerHitting = self.actionScreen.getPlayerByID(whoHit)
-                    playerGotHit = self.actionScreen.getPlayerByID(equipmentHit)
-                    print(f'{playerHitting.getCodeName()} hit: {playerGotHit.getCodeName()}')
-                    
-                elif len(actualVals) == 1:  
-                    whoHit = actualVals[0]
-                    if(whoHit == 202):
-                            print("Game Start! :D")
-                    elif whoHit == 221:
-                            print("Game End! :D")
-                    elif whoHit == 53:  
-                            print("Red Team Scores! :D")
-                    elif whoHit == 43:
-                            print("Green Team Scores! :D")
+                    if(equipmentHit != "53" and equipmentHit != "43"):
+                        print(whoHit + " hit: " + equipmentHit)
+                        playerHitting = self.actionScreen.getPlayerByID(whoHit)
+                        playerGotHit = self.actionScreen.getPlayerByID(equipmentHit)
+                        self.actionScreen.action_text_box.insert(tk.END, f'{playerHitting.getCodeName()} hit: {playerGotHit.getCodeName()}\n')
+                        if(playerHitting.getTeam() != playerGotHit.getTeam()):
+                            self.sendHit(equipmentHit)
+                            playerHitting.setPoints(playerHitting.getPoints() + 10)
+                            self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_score = playerHitting.getPoints())
+                        else:
+                            self.sendHit(whoHit)
+                            playerHitting.setPoints(playerHitting.getPoints() - 10)
+                            self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_score = playerHitting.getPoints())
+                        
+                        
+                    elif(equipmentHit == "53"):
+                        print(f'red base hit by {playerHitting.getCodeName()}')
+                        if (playerHitting.getTeam() == "green"):
+                            self.sendHit(53)
+                            playerHitting.setPoints(playerHitting.getPoints() + 100)
+                            self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_name = None, new_score = playerHitting.getPoints(), baseHit=True)
+                    elif(equipmentHit == "43"):
+                        print(f'green base hit by {playerHitting.getCodeName()}')
+                        if (playerHitting.getTeam() == "red"):
+                            self.sendHit(43)
+                            playerHitting.setPoints(playerHitting.getPoints() + 100)
+                            self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_name = None, new_score = playerHitting.getPoints(), baseHit=True)
+                      
                     else:
-                        print(whoHit + " is active")
+                        print("somehting went wrong")
+                        
+                    
+               
                 else:
                     print("Data is messed up:", actualVals)
             except Exception as e:
