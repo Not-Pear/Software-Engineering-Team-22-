@@ -29,12 +29,16 @@ class ActionScreen:
         self.red_team_container.pack(side=tk.LEFT, padx=20, pady=20)
 
         self.red_team_label = tk.Label(self.red_team_container, text="Red Team", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
+
         self.red_team_label.pack()
+        
+        #self.red_team_score = tk.Label(self.red_team_container, text="Red Team Score: ", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
 
         self.red_team_frame = tk.Frame(self.red_team_container, bg = 'black') # make it so that each box and frame are contained in another frame
         self.red_team_frame.pack(side=tk.LEFT, padx=(0, 10)) # slight gap between columns
-        self.red_team_score_frame = tk.Frame(self.red_team_container, bg = 'black')
+        self.red_team_score_frame = tk.Frame(self.red_team_container, bg = 'black') 
         self.red_team_score_frame.pack(side=tk.LEFT)
+        #######
 
 
 
@@ -108,7 +112,7 @@ class ActionScreen:
     def testAutoScrollTxtBox(self):
         global count
         self.count = self.count + 1
-        self.action_text_box.insert(tk.END, f'Testing Autoscroll Text Box, Value = {self.count}\n')
+        #self.action_text_box.insert(tk.END, f'Testing Autoscroll Text Box, Value = {self.count}\n')
         self.action_text_box.see(tk.END) #What scrolls to the end
         self.parent.after(1000, self.testAutoScrollTxtBox)
         
@@ -144,10 +148,18 @@ class ActionScreen:
             stopAudio()
             self.is_running = False
 
-    def update_entries(self, team, player_num, new_name=None, new_score=None):
+    def update_entries(self, team, player_num, new_name=None, new_score=None, baseHit = False):
         if team == "green" and player_num in self.green_text_boxes:
             # self.green_textbox_scores.config(state = NORMAL)
             codename, score = self.green_text_boxes[player_num]   #codename is codename entry, score is score entry
+            if baseHit:
+                print("In green base")
+                temp_name = "B " + codename.get()
+                codename.config(state = "normal")
+                codename.delete(0, tk.END)
+                codename.insert(0, temp_name)
+                codename.config(bg = "green")
+                codename.config(state = "disabled", disabledbackground = "green", disabledforeground = "black")
             if new_name is not None:
                 codename.config(state="normal")  # Enable editing
                 codename.delete(0, tk.END)
@@ -160,6 +172,14 @@ class ActionScreen:
                 score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
         if team == "red" and player_num in self.red_text_boxes:
             codename, score = self.red_text_boxes[player_num]   #codename is codename entry, score is score entry
+            if baseHit:
+                print("In red base")
+                temp_name = "B " + codename.get()
+                codename.config(state = "normal")
+                codename.delete(0, tk.END)
+                codename.insert(0, temp_name)
+                codename.config(bg = "red")
+                codename.config(state = "disabled", disabledbackground = "red", disabledforeground = "black")
             if new_name is not None:
                 codename.config(state="normal")
                 codename.delete(0, tk.END)
