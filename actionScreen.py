@@ -30,14 +30,16 @@ class ActionScreen:
 
         self.red_team_label = tk.Label(self.red_team_container, text="Red Team", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
 
-        self.red_team_label.pack(side=tk.LEFT)
+
+        self.red_team_label.pack()
         
-        self.red_team_score = tk.Label(self.red_team_container, text="Red Team Score: ", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
+        #self.red_team_score = tk.Label(self.red_team_container, text="Red Team Score: ", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
 
         self.red_team_frame = tk.Frame(self.red_team_container, bg = 'black') # make it so that each box and frame are contained in another frame
         self.red_team_frame.pack(side=tk.LEFT, padx=(0, 10)) # slight gap between columns
-        
-        #######
+        self.red_team_score_frame = tk.Frame(self.red_team_container, bg = 'black') 
+        self.red_team_score_frame.pack(side=tk.LEFT)
+
 
 
 
