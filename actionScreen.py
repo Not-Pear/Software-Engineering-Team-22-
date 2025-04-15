@@ -29,6 +29,7 @@ class ActionScreen:
         self.red_team_container.pack(side=tk.LEFT, padx=20, pady=20)
 
         self.red_team_label = tk.Label(self.red_team_container, text="Red Team", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
+
         self.red_team_label.pack(side=tk.LEFT)
         
         self.red_team_score = tk.Label(self.red_team_container, text="Red Team Score: ", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
