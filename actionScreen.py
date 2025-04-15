@@ -104,8 +104,8 @@ class ActionScreen:
             print("Before label update")
             self.time_label.config(text="Game Start!", fg="green")
             print("After label update")
-            self.parent.after(2000, lambda: print("Starting game_Timer now..."))
-            self.parent.after(2000, self.game_Timer)
+            self.parent.after(30000, lambda: print("Starting game_Timer now..."))
+            self.parent.after(30000, self.game_Timer)
 
             
 
