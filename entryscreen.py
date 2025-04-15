@@ -168,7 +168,7 @@ def start(comms):
         print("Clearing screen")
     #starting action screen 
     def startActionScreen():
-        actionScreen = ActionScreen(60, comms)
+        actionScreen = ActionScreen(2, 30, comms, players)
         redCounter = 0
         greenCounter = 0
 
