@@ -30,12 +30,12 @@ class SocketComms:
             print(f"Sent: Code 202")
         except Exception as e:
             print(f"Send error: {e}")
-        try:
-            message = f"{0}, {202}".encode()  # Encode as bytes
-            self.sendSocket.sendto(message, (self.localIP, self.sendPort))
-            print(f"Sent: Code 202")
-        except Exception as e:
-            print(f"Send error: {e}")
+        # try:
+        #     message = f"{0}, {202}".encode()  # Encode as bytes
+        #     self.sendSocket.sendto(message, (self.localIP, self.sendPort))
+        #     print(f"Sent: Code 202")
+        # except Exception as e:
+        #     print(f"Send error: {e}")
     def sendEqpID(self, eqpID):
         #Send whoHit and equipmentID 
         try:
@@ -60,7 +60,12 @@ class SocketComms:
                             print(equipmentHit  + " is active")
                     else:
                         print(whoHit + " hit: " + equipmentHit)
-    
+                elif len(actualVals) == 1:  
+                    whoHit = actualVals
+                    if(whoHit == 202):
+                            print("Game Start! :D")
+                    else:
+                        print(whoHit + " is active")
                 else:
                     print("Data is messed up:", actualVals)
             except Exception as e:
