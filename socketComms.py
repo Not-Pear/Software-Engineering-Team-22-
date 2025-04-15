@@ -13,7 +13,30 @@ class SocketComms:
         # Set up the listener
         self.receiveSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.receiveSocket.bind((self.localIP, self.receivePort))
-
+    def redTeamScores(self):
+        #Send whoHit and equipmentID 
+        try:
+            message = f"{53}".encode()  # Encode as bytes
+            self.sendSocket.sendto(message, (self.localIP, self.sendPort))
+            print(f"Sent: Code 53")
+        except Exception as e:
+            print(f"Send error: {e}")
+    def greenTeamScores(self):
+        #Send whoHit and equipmentID 
+        try:
+            message = f"{43}".encode()  # Encode as bytes
+            self.sendSocket.sendto(message, (self.localIP, self.sendPort))
+            print(f"Sent: Code 43")
+        except Exception as e:
+            print(f"Send error: {e}")   
+    def sendEnd(self):
+        try:
+            message = f"{221}".encode()  # Encode as bytes
+            for i in range(3):
+                self.sendSocket.sendto(message, (self.localIP, self.sendPort))
+                print(f"Sent: Code 221")
+        except Exception as e:
+            print(f"Send error: {e}")
     def sendHit(self, whoHit, equipmentHit):
         #Send whoHit and equipmentID 
         try:
@@ -30,12 +53,6 @@ class SocketComms:
             print(f"Sent: Code 202")
         except Exception as e:
             print(f"Send error: {e}")
-        # try:
-        #     message = f"{0}, {202}".encode()  # Encode as bytes
-        #     self.sendSocket.sendto(message, (self.localIP, self.sendPort))
-        #     print(f"Sent: Code 202")
-        # except Exception as e:
-        #     print(f"Send error: {e}")
     def sendEqpID(self, eqpID):
         #Send whoHit and equipmentID 
         try:
@@ -64,6 +81,12 @@ class SocketComms:
                     whoHit = actualVals
                     if(whoHit == 202):
                             print("Game Start! :D")
+                    elif whoHit == 221:
+                            print("Game End! :D")
+                    elif whoHit == 53:  
+                            print("Red Team Scores! :D")
+                    elif whoHit == 43:
+                            print("Green Team Scores! :D")
                     else:
                         print(whoHit + " is active")
                 else:
