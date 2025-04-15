@@ -1,11 +1,13 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import scrolledtext
-from socketComms import SocketComms
+import time
+
+#from socketComms import SocketComms
 
 
 class ActionScreen: 
-    def __init__(self, initial_time, comms):
+    def __init__(self, initial_time, game_time):
         self.parent = tk.Tk()
         self.parent.title("Action Screen")
         #getting screen width and height of display
@@ -14,7 +16,7 @@ class ActionScreen:
         #setting tkinter window size
         self.parent.geometry("%dx%d" % (self.width, self.height))  
 
-        self.comms = comms
+        #self.comms = comms
 
         self.action_text_box = tk.Text(self.parent)
         self.action_text_box = scrolledtext.ScrolledText(self.parent, height = 5, width = 50, wrap = "word")
@@ -77,6 +79,8 @@ class ActionScreen:
 
         self.initial_time = initial_time
         self.remaining_time = initial_time
+        self.game_time = game_time
+        self.remaining_game_time = game_time
         self.is_running = True
         self.time_label = tk.Label(self.parent, text="00:00", font=("Helvetica", 15))
         self.time_label.pack(side = tk.BOTTOM, pady=20)
@@ -97,8 +101,24 @@ class ActionScreen:
             self.remaining_time -= 1
             self.parent.after(1000, self.countdown)  # Use self.parent.after
         elif self.remaining_time == 0:
+            print("Before label update")
             self.time_label.config(text="Game Start!", fg="green")
-            self.comms.sendStart()
+            print("After label update")
+            self.parent.after(2000, lambda: print("Starting game_Timer now..."))
+            self.parent.after(2000, self.game_Timer)
+
+            
+
+    def game_Timer(self):
+        if self.remaining_game_time > 0 and self.remaining_time == 0:
+            print("Inside game Timer")
+            minutes, seconds = divmod(self.remaining_game_time, 60)
+            self.time_label.config(text=f"Time Remaining: {minutes:02}:{seconds:02}", fg="black")
+            self.remaining_game_time -= 1
+            self.parent.after(1000, self.game_Timer)  # Use self.parent.after
+        elif self.remaining_game_time == 0:
+            self.time_label.config(text="Game Over!", fg="red")
+            #self.comms.sendStart()
             self.is_running = False
 
     def update_entries(self, team, player_num, new_name=None, new_score=None):
@@ -136,3 +156,5 @@ class ActionScreen:
         #self.update_entries("green", 0, "Tom", 0)
 
         self.parent.mainloop()
+    def destroy(self):
+        self.parent.destroy
