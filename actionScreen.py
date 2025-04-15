@@ -14,7 +14,7 @@ class ActionScreen:
         self.width= self.parent.winfo_screenwidth() 
         self.height= self.parent.winfo_screenheight()
         #setting tkinter window size
-        self.parent.geometry("%dx%d" % (self.width, self.height))  
+        self.parent.geometry("%dx%d" % (1000, 800))  
 
         #self.comms = comms
 
@@ -22,17 +22,30 @@ class ActionScreen:
         self.action_text_box = scrolledtext.ScrolledText(self.parent, height = 5, width = 50, wrap = "word")
         self.action_text_box.pack(side = tk.BOTTOM,padx = 20, pady = 20)
 
-        # Create frames for Green Team (Right) and Red Team (Left)
-        self.red_team_frame = tk.Frame(self.parent)
-        self.red_team_frame.pack(side=tk.LEFT, padx=20, pady=20)
-        self.red_team_score_frame = tk.Frame(self.parent)
-        self.red_team_score_frame.pack(side=tk.LEFT, padx=20, pady=20)
+        self.red_team_container = tk.Frame(self.parent)
+        self.red_team_container.pack(side=tk.LEFT, padx=20, pady=20)
+
+        self.red_team_label = tk.Label(self.red_team_container, text="Red Team", font=("Helvetica", 16, "bold"), fg="red")
+        self.red_team_label.pack()
+
+        self.red_team_frame = tk.Frame(self.red_team_container)
+        self.red_team_frame.pack(side=tk.LEFT, padx=(0, 10))  # slight gap between columns
+        self.red_team_score_frame = tk.Frame(self.red_team_container)
+        self.red_team_score_frame.pack(side=tk.LEFT)
 
 
-        self.green_team_score_frame = tk.Frame(self.parent)
-        self.green_team_score_frame.pack(side=tk.RIGHT, padx=20, pady=20)
-        self.green_team_frame = tk.Frame(self.parent)
-        self.green_team_frame.pack(side=tk.RIGHT, padx=20, pady=20)
+
+        self.green_team_container = tk.Frame(self.parent)
+        self.green_team_container.pack(side=tk.RIGHT, padx=20, pady=20)
+
+        self.green_team_label = tk.Label(self.green_team_container, text="Green Team", font=("Helvetica", 16, "bold"), fg="green")
+        self.green_team_label.pack()
+
+        self.green_team_score_frame = tk.Frame(self.green_team_container)
+        self.green_team_score_frame.pack(side=tk.LEFT)
+        self.green_team_frame = tk.Frame(self.green_team_container)
+        self.green_team_frame.pack(side=tk.LEFT, padx=(10, 0))  # slight gap between columns
+
 
 
         self.green_text_boxes = {}
@@ -54,7 +67,8 @@ class ActionScreen:
             self.green_text_boxes[i] = (self.green_textbox_codename, self.green_textbox_scores)   #Codename, score
             
 
-
+        # self.red_team_label = tk.Label(self.red_team_frame, text=f"Red Team:", fg = "red")
+        # self.red_team_label.pack(padx=20, pady=20)
         self.red_text_boxes = {}
         for j in range(15):
             self.red_player_label = tk.Label(self.red_team_frame, text=f"Player {j+1}:", fg = "red")
@@ -83,7 +97,7 @@ class ActionScreen:
         self.remaining_game_time = game_time
         self.is_running = True
         self.time_label = tk.Label(self.parent, text="00:00", font=("Helvetica", 15))
-        self.time_label.pack(side = tk.BOTTOM, pady=20)
+        self.time_label.pack(side = tk.BOTTOM, pady=5)
 
         self.count = 0
 
@@ -151,9 +165,9 @@ class ActionScreen:
     def run(self):
         self.testAutoScrollTxtBox()
         self.countdown()
-        # self.update_entries("green", 0, self.test_teams[0], 0)  #testing
-        # self.update_entries("red", 0, self.test_teams[1], 50)
-        #self.update_entries("green", 0, "Tom", 0)
+        self.update_entries("green", 0, self.test_teams[0], 0)  #testing
+        self.update_entries("red", 0, self.test_teams[1], 50)
+        self.update_entries("green", 0, "Tom", 0)
 
         self.parent.mainloop()
     def destroy(self):
