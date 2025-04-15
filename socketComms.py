@@ -1,5 +1,6 @@
 import socket
 import threading
+import tkinter as tk
 
 class SocketComms:
     def __init__(self, localIP):
@@ -7,6 +8,7 @@ class SocketComms:
         self.sendPort = 7500
         self.receivePort = 7501
         self.bufferSize = 1024
+        self.actionScreen = None
         # Set up the sender
         self.sendSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sendSocket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
@@ -45,6 +47,8 @@ class SocketComms:
             print(f"Sent: Player {whoHit} hit Equipment {equipmentHit}")
         except Exception as e:
             print(f"Send error: {e}")
+    def setActionScreen(self, actionScreen):
+        self.actionScreen = actionScreen
     def sendStart(self):
         #Send whoHit and equipmentID 
         try:
@@ -56,7 +60,7 @@ class SocketComms:
     def sendEqpID(self, eqpID):
         #Send whoHit and equipmentID 
         try:
-            message = f"{0},{eqpID}".encode()  # Encode as bytes
+            message = f"{eqpID}".encode()  # Encode as bytes
             self.sendSocket.sendto(message, (self.localIP, self.sendPort))
             print(f"Sent: Equipment ID {eqpID}")
         except Exception as e:
@@ -66,19 +70,18 @@ class SocketComms:
         while True:
             try:
                 data, address = self.receiveSocket.recvfrom(self.bufferSize)
-                actualVals = data.decode().split(",")  # Split into player sending and equipment ID hit
+                actualVals = data.decode().split(":")  # Split into player sending and equipment ID hit
                 
                 if len(actualVals) == 2:  #check for validity
                     whoHit, equipmentHit = actualVals
-                    if(whoHit == 0):
-                        if(equipmentHit == 202):
-                            print("Game Start! :D")
-                        else:
-                            print(equipmentHit  + " is active")
-                    else:
-                        print(whoHit + " hit: " + equipmentHit)
+                    print(whoHit + " hit: " + equipmentHit)
+                    self.actionScreen.action_text_box.insert(tk.END, f'{whoHit} hit: {equipmentHit}\n')
+                    playerHitting = self.actionScreen.getPlayerByID(whoHit)
+                    playerGotHit = self.actionScreen.getPlayerByID(equipmentHit)
+                    print(f'{playerHitting.getCodeName()} hit: {playerGotHit.getCodeName()}')
+                    
                 elif len(actualVals) == 1:  
-                    whoHit = actualVals
+                    whoHit = actualVals[0]
                     if(whoHit == 202):
                             print("Game Start! :D")
                     elif whoHit == 221:

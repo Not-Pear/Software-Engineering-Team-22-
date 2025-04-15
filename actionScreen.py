@@ -2,12 +2,13 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import scrolledtext
 import time
+from audio import *
 
 #from socketComms import SocketComms
 
 
 class ActionScreen: 
-    def __init__(self, initial_time, game_time):
+    def __init__(self, initial_time, game_time, comms, players):
         self.parent = tk.Tk()
         self.parent.title("Action Screen")
         #getting screen width and height of display
@@ -16,7 +17,8 @@ class ActionScreen:
         #setting tkinter window size
         self.parent.geometry("%dx%d" % (self.width, self.height))  
 
-        #self.comms = comms
+        self.comms = comms
+        comms.setActionScreen(self)
 
         self.action_text_box = tk.Text(self.parent)
         self.action_text_box = scrolledtext.ScrolledText(self.parent, height = 5, width = 50, wrap = "word")
@@ -86,6 +88,7 @@ class ActionScreen:
         self.time_label.pack(side = tk.BOTTOM, pady=20)
 
         self.count = 0
+        self.players = players
 
     def testAutoScrollTxtBox(self):
         global count
@@ -93,6 +96,11 @@ class ActionScreen:
         self.action_text_box.insert(tk.END, f'Testing Autoscroll Text Box, Value = {self.count}\n')
         self.action_text_box.see(tk.END) #What scrolls to the end
         self.parent.after(1000, self.testAutoScrollTxtBox)
+        
+    def getPlayerByID(self, searchEqID):
+        for p in self.players:
+            if (p.getequipmentid() == searchEqID):
+                return p
 
     def countdown(self):
         if self.is_running and self.remaining_time > 0:
@@ -101,24 +109,24 @@ class ActionScreen:
             self.remaining_time -= 1
             self.parent.after(1000, self.countdown)  # Use self.parent.after
         elif self.remaining_time == 0:
-            print("Before label update")
             self.time_label.config(text="Game Start!", fg="green")
-            print("After label update")
             self.parent.after(2000, lambda: print("Starting game_Timer now..."))
             self.parent.after(2000, self.game_Timer)
+            self.parent.after(2000, self.comms.sendStart)
+            self.parent.after(2000, playAudio)
 
             
 
     def game_Timer(self):
         if self.remaining_game_time > 0 and self.remaining_time == 0:
-            print("Inside game Timer")
             minutes, seconds = divmod(self.remaining_game_time, 60)
             self.time_label.config(text=f"Time Remaining: {minutes:02}:{seconds:02}", fg="black")
             self.remaining_game_time -= 1
             self.parent.after(1000, self.game_Timer)  # Use self.parent.after
         elif self.remaining_game_time == 0:
             self.time_label.config(text="Game Over!", fg="red")
-            #self.comms.sendStart()
+            self.comms.sendEnd()
+            stopAudio()
             self.is_running = False
 
     def update_entries(self, team, player_num, new_name=None, new_score=None):
@@ -151,9 +159,6 @@ class ActionScreen:
     def run(self):
         self.testAutoScrollTxtBox()
         self.countdown()
-        # self.update_entries("green", 0, self.test_teams[0], 0)  #testing
-        # self.update_entries("red", 0, self.test_teams[1], 50)
-        #self.update_entries("green", 0, "Tom", 0)
 
         self.parent.mainloop()
     def destroy(self):
