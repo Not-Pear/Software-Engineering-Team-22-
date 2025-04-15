@@ -2,6 +2,7 @@ from tkinter import *
 # from photonDB import query_username  # Assuming you have a function to query usernames
 from player import Player
 import photonDB
+import audio
 from actionScreen import ActionScreen
 s = Tk()
 
@@ -17,17 +18,17 @@ main_title = Label(s, text="Edit Current Game", font=("Terminal", 20, "bold"), b
 main_title.pack(side="top", pady=10)
 
 # Create a canvas for the general layout ------------------------------------------------
-canvas = Canvas(s, width=500, height=450, bg="grey")
+canvas = Canvas(s, width=600, height=450, bg="grey")
 canvas.pack()
 
 # Make the red side
-canvas.create_rectangle(0, 0, 250, 500, fill="dark red", outline="grey")
-canvas.create_text(125, 15, text="Red Team", font=("Terminal", 15, "bold"), fill="#ff746c")
+canvas.create_rectangle(0, 0, 300, 450, fill="dark red", outline="grey")
+canvas.create_text(65, 15, text="Red Team", font=("Terminal", 15, "bold"), fill="#ff746c")
 
 # Make the green side
-canvas.create_rectangle(250, 0, 500, 450, fill="dark green", outline="grey")
+canvas.create_rectangle(300, 0, 600, 450, fill="dark green", outline="grey")
 canvas.create_text(375, 15, text="Green Team", font=("Terminal", 15, "bold"), fill="#CFFDBC")
-
+# start function for the entry screen --------------------------------------------------------
 def start(comms):
     # Store entries and username fields
     red_entries = []
@@ -90,7 +91,7 @@ def start(comms):
             newercanvas.create_window(150,200, window=done)
             newer.wait_window()
             
-    
+    # check entered id for username ----------------------------------------------------------
     def query_username(player_id):
         player = photonDB.queryId(player_id)
         if player.id == -1: #if player does not exist 
@@ -108,6 +109,7 @@ def start(comms):
 
             new_name = Entry(new, width=10)
             newcanvas.create_window(150,150, window=new_name)
+            #function to add username 
             def added():
                 new_players.append(new_name.get())
                 player.setCodeName(new_players[-1])
@@ -123,35 +125,39 @@ def start(comms):
             else:
                 return ""
         else:
-            # return player.codename if player.codename else ""
             return player
     
-    for i in range(15):
+    #displaying the name and id boxes  ---------------------------------------------------------------------------------
+    for i in range(15): #red user entry boxes 
         aentry = Entry(s, width=10)
-        canvas.create_window(50, 40 + (i * 20), window=aentry)
+        canvas.create_window(50, 40 + (i * 25), window=aentry)
         red_entries.append(aentry)
 
         username_entry = Entry(s, width=15)
-        canvas.create_window(150, 40 + (i * 20), window=username_entry)
+        canvas.create_window(150, 40 + (i * 25), window=username_entry)
         red_usernames.append(username_entry)
 
         save_red = buttonID(s, i, "red", text="Save", command=None)
-        canvas.create_window(230, 40 + (i * 20), window=save_red)
+        canvas.create_window(260, 40 + (i * 25), window=save_red)
     
-    for i in range(15):
+    for i in range(15): #green user entry boxes 
+
         entry = Entry(s, width=10)
-        canvas.create_window(300, 40 + (i * 20), window=entry)
+        canvas.create_window(350, 40 + (i * 25), window=entry)
         green_entries.append(entry)
 
         username_entry = Entry(s, width=15)
-        canvas.create_window(400, 40 + (i * 20), window=username_entry)
+        canvas.create_window(450, 40 + (i * 25), window=username_entry)
         green_usernames.append(username_entry)
 
         save_green = buttonID(s, i, "green", text="Save", command=None)
-        canvas.create_window(475, 40 + (i * 20), window=save_green)
-    
+        canvas.create_window(560, 40 + (i * 25), window=save_green)
+
+    # Button functions ----------------------------------------------------------------------------------------------------
+    #place holder function for button 
     def do_nothing():
         print("Button Clicked")
+    #clear function 
     def clear(): 
         for i in range(15): 
             red_entries[i].delete(0, END)
@@ -160,6 +166,7 @@ def start(comms):
             green_usernames[i].delete(0, END)
         players.clear()
         print("Clearing screen")
+    #starting action screen 
     def startActionScreen():
         actionScreen = ActionScreen(60, comms)
         redCounter = 0
@@ -172,27 +179,45 @@ def start(comms):
             if player.getTeam() == "green":
                 actionScreen.update_entries(player.getTeam(), greenCounter, player.getCodeName(), player.getPoints())
                 greenCounter+=1
-
-
-        # print(f"{red_usernames}")
-        
-        # for i in green_usernames:
-        #     actionScreen.update_entries("green", 0, green_usernames[i], 0)
-        # for j in red_usernames:
-        #     actionScreen.update_entries("red", 0, red_usernames[j], 0)
-
-
         actionScreen.run()
+    #window for changing the ip address 
+    def changeIP(): 
+        #create new window 
+        ipbox = Toplevel(s)
+        ipbox.geometry('300x300')
+        ipbox.configure(bg="#FFFFFF")
+        ipbox.title("Change IP Address")
 
+        #make canvas for the window 
+        ipcanvas = Canvas(ipbox, width=300, height=300, bg="white")
+        ipcanvas.pack()
+
+        #insert text to tell user to enter new username
+        ipcanvas.create_text(150,100,text="Please enter IP Adress: ", fill="black")
+
+        #spot to input 
+        ip_input = Entry(ipbox, width=10)
+        ipcanvas.create_window(150,150, window=ip_input)
+
+        def ip_entered():
+            ipbox.destroy()
+        #make submit button 
+        submit = Button(ipbox, text='Submit', command=ip_entered)
+        ipcanvas.create_window(150,200, window=submit)
+
+    #canvas for the buttons 
+    button_canvas = Canvas(s, width=800, height=100, bg='grey')
+    button_canvas.pack(side='bottom')
+
+    #button information 
     button_config = [
-        ("F1\nEdit\nGame", 0,do_nothing, "<F1>"), ("F2\nGame\nParameters", 70,do_nothing, "<F2>"), ("F3\nStart\nGame", 140, startActionScreen, "<F3>"),
-        ("F5\nPreEntered\nGames", 280,do_nothing, "<F5>"), ("F7\n", 420,do_nothing, "<F7>"), ("F8\nView\nGame", 490,do_nothing, "<F8>"),
-        ("F10\nFlick\nSync", 630,do_nothing, "<F10>"), ("F12\nClear\nGame", 730,clear, "<F12>")
+        ("F1\nStart\nGame", 160, startActionScreen, "<F1>"), ("F2\nChange\nIP Address", 410, changeIP, "<F2>"), ("F12\nClear\nGame",650 ,clear, "<F12>")
     ]
 
+    #displaying buttons 
     for text, x_pos, func, key in button_config:
-        btn = Button(s, text=text, bg="black", fg="green", command=func) #make button
-        btn.place(x=x_pos, y=520, width=70, height=80) #in this specific spot
+        btn = Button(s, text=text, command=func) #make button
+        button_canvas.create_window(x_pos, 50, window=btn, width=100, height=80)
         s.bind(key, lambda event, f=func: f()) # bound to these keys
         
 
