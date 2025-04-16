@@ -29,9 +29,16 @@ class ActionScreen:
         self.red_team_container.pack(side=tk.LEFT, padx=20, pady=20)
 
         self.red_team_label = tk.Label(self.red_team_container, text="Red Team", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
-
-
         self.red_team_label.pack()
+
+        self.red_team_total_score_label = tk.Label(self.red_team_container, text="Total Score: ", font=("Helvetica", 8, "normal"), fg="red", bg = 'black')
+        self.red_team_total_score_label.pack()
+        self.red_team_total_score = tk.Entry(self.red_team_container, width = 15)
+        self.red_team_total_score.insert(0, "0")
+        self.red_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
+
+        self.red_team_total_score.pack(pady = 10)
+
         
         #self.red_team_score = tk.Label(self.red_team_container, text="Red Team Score: ", font=("Helvetica", 16, "bold"), fg="red", bg = 'black')
 
@@ -48,6 +55,13 @@ class ActionScreen:
 
         self.green_team_label = tk.Label(self.green_team_container, text="Green Team", font=("Helvetica", 16, "bold"), fg="green", bg = 'black')
         self.green_team_label.pack()
+
+        self.green_team_total_score_label = tk.Label(self.green_team_container, text="Total Score: ", font=("Helvetica", 8, "normal"), fg="green", bg = 'black')
+        self.green_team_total_score_label.pack()
+        self.green_team_total_score = tk.Entry(self.green_team_container, width = 15)
+        self.green_team_total_score.insert(0, "0")
+        self.green_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
+        self.green_team_total_score.pack(pady = 10)
 
         self.green_team_frame = tk.Frame(self.green_team_container, bg = 'black') # make it so that each box and frame are contained in another frame
         self.green_team_frame.pack(side=tk.LEFT, padx=(10, 0)) # slight gap between columns
@@ -109,6 +123,9 @@ class ActionScreen:
 
         self.count = 0
         self.players = players
+
+        self.red_total_score = 0
+        self.green_total_score = 0
 
     def testAutoScrollTxtBox(self):
         global count
@@ -192,9 +209,34 @@ class ActionScreen:
                 score.insert(0, new_score)
                 score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
 
+# takes global variable of total scores and adds new score to it
+    def update_scores(self, team, new_score):
+        if team == "red":
+            self.red_total_score = self.red_total_score + new_score
+            self.red_team_total_score.config(state = "normal")
+            self.red_team_total_score.delete(0, tk.END)
+            self.red_team_total_score.insert(0, self.red_total_score)
+            self.red_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
+        elif team == "green":
+            self.green_total_score = self.green_total_score + new_score
+
+            self.green_team_total_score.config(state = "normal")
+            self.green_team_total_score.delete(0, tk.END)
+            self.green_team_total_score.insert(0, self.green_total_score)
+            self.green_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
+
     def run(self):
         self.testAutoScrollTxtBox()
         self.countdown()
+
+        #testing 
+        self.parent.after(4000, lambda: self.update_scores("red", 10))
+        self.parent.after(4000, lambda: self.update_scores("green", 10))
+        self.parent.after(10000, lambda: self.update_scores("red", 20))
+        self.parent.after(10000, lambda: self.update_scores("green", 40))
+
+
+
 
 
         self.parent.mainloop()
