@@ -81,24 +81,30 @@ class SocketComms:
                         if(playerHitting.getTeam() != playerGotHit.getTeam()):
                             self.sendHit(equipmentHit)
                             playerHitting.setPoints(playerHitting.getPoints() + 10)
+                            self.actionScreen.update_scores(playerHitting.getTeam(), 10)
                             self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_score = playerHitting.getPoints())
                         else:
                             self.sendHit(whoHit)
                             playerHitting.setPoints(playerHitting.getPoints() - 10)
+                            self.actionScreen.update_scores(playerHitting.getTeam(), -10)
                             self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_score = playerHitting.getPoints())
                         
                         
                     elif(equipmentHit == "53"):
+                        playerGotHit = self.actionScreen.getPlayerByID(equipmentHit)
                         print(f'red base hit by {playerHitting.getCodeName()}')
                         if (playerHitting.getTeam() == "green"):
                             self.sendHit(53)
                             playerHitting.setPoints(playerHitting.getPoints() + 100)
+                            self.actionScreen.update_scores(playerHitting.getTeam(), 100)
                             self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_name = None, new_score = playerHitting.getPoints(), baseHit=True)
                     elif(equipmentHit == "43"):
+                        playerGotHit = self.actionScreen.getPlayerByID(equipmentHit)
                         print(f'green base hit by {playerHitting.getCodeName()}')
                         if (playerHitting.getTeam() == "red"):
                             self.sendHit(43)
                             playerHitting.setPoints(playerHitting.getPoints() + 100)
+                            self.actionScreen.update_scores(playerHitting.getTeam(), 100)
                             self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_name = None, new_score = playerHitting.getPoints(), baseHit=True)
                       
                     else:
