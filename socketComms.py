@@ -64,6 +64,8 @@ class SocketComms:
             print(f"Sent: Equipment ID {eqpID}")
         except Exception as e:
             print(f"Send error: {e}")
+    def setIP(self, localIP):
+        self.localIP = localIP
     def receive(self):
        #Listen for messages 
         while True:

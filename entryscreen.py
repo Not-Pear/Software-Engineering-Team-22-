@@ -168,7 +168,7 @@ def start(comms):
         print("Clearing screen")
     #starting action screen 
     def startActionScreen():
-        actionScreen = ActionScreen(2, 30, comms, players)
+        actionScreen = ActionScreen(30, 360, comms, players)
         redCounter = 0
         greenCounter = 0
 
@@ -202,6 +202,7 @@ def start(comms):
         ipcanvas.create_window(150,150, window=ip_input)
 
         def ip_entered():
+            comms.setIP(ip_input.get())
             ipbox.destroy()
         #make submit button 
         submit = Button(ipbox, text='Submit', command=ip_entered)
