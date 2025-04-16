@@ -91,7 +91,7 @@ class SocketComms:
                         
                         
                     elif(equipmentHit == "53"):
-                        playerGotHit = self.actionScreen.getPlayerByID(equipmentHit)
+                        playerHitting = self.actionScreen.getPlayerByID(whoHit)
                         print(f'red base hit by {playerHitting.getCodeName()}')
                         if (playerHitting.getTeam() == "green"):
                             self.sendHit(53)
@@ -99,7 +99,7 @@ class SocketComms:
                             self.actionScreen.update_scores(playerHitting.getTeam(), 100)
                             self.actionScreen.update_entries(playerHitting.getTeam(), playerHitting.getPlayerNum(), new_name = None, new_score = playerHitting.getPoints(), baseHit=True)
                     elif(equipmentHit == "43"):
-                        playerGotHit = self.actionScreen.getPlayerByID(equipmentHit)
+                        playerHitting = self.actionScreen.getPlayerByID(whoHit)
                         print(f'green base hit by {playerHitting.getCodeName()}')
                         if (playerHitting.getTeam() == "red"):
                             self.sendHit(43)

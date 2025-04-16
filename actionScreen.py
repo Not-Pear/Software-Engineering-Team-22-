@@ -71,7 +71,6 @@ class ActionScreen:
 
 
         self.green_text_boxes = {}
-        self.test_teams = ["Bob", "Jimbob", "Jimmybimbob"]
 
         for i in range(15):
             self.green_player_score_label = tk.Label(self.green_team_score_frame, text=f"Score:", fg = "green", bg = 'black')
@@ -126,6 +125,9 @@ class ActionScreen:
 
         self.red_total_score = 0
         self.green_total_score = 0
+        self.leading_team = None
+        self.flash_thick = 2  
+
 
     def testAutoScrollTxtBox(self):
         global count
@@ -225,9 +227,38 @@ class ActionScreen:
             self.green_team_total_score.insert(0, self.green_total_score)
             self.green_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
 
+
+
+
+    def getHigherTeam(self):
+
+        self.red_team_container.config(highlightbackground="red", highlightthickness = 2)
+        self.green_team_container.config(highlightbackground="green", highlightthickness = 2)
+        if self.flash_thick == 2:
+            self.flash_thick = 6
+        else:
+            self.flash_thick = 2
+
+        if self.red_total_score > self.green_total_score:
+            self.red_team_container.config(highlightbackground="#f60d0d", highlightthickness = self.flash_thick)
+
+            self.parent.after(500, self.getHigherTeam)
+            return
+        elif self.green_total_score > self.red_total_score:
+            self.green_team_container.config(highlightbackground="#4ed526", highlightthickness = self.flash_thick)
+            self.parent.after(500, self.getHigherTeam)
+            return
+        else:
+            # Tie condition
+            self.red_team_container.config(highlightbackground="red", highlightthickness = 2)
+            self.green_team_container.config(highlightbackground="green", highlightthickness = 2)
+            self.parent.after(500, self.getHigherTeam)
+            return
+
     def run(self):
         self.testAutoScrollTxtBox()
         self.countdown()
+        self.getHigherTeam()
 
 
 
