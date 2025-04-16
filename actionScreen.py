@@ -234,6 +234,7 @@ class ActionScreen:
 
         self.red_team_container.config(highlightbackground="red", highlightthickness = 2)
         self.green_team_container.config(highlightbackground="green", highlightthickness = 2)
+
         if self.flash_thick == 2:
             self.flash_thick = 6
         else:
