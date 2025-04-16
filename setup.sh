@@ -8,3 +8,4 @@ pip3 install tk
 pip3 install Pillow
 pip3 install psycopg2-binary
 sudo apt install python3-tk 
+pip3 install pygame

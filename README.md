@@ -8,7 +8,8 @@ Sarah Smith: Sarah Smith, <br/>
 
 Instructions for running: <br/>
 Assuming you have a photon Debian VM with our python and logo file on it:
-
+<br/>
+There is a setup.sh file that will automatically run these commands to install all dependencies <br/>
 Run these commands to install all dependencies:<br/>
 sudo apt update <br/>
 sudo apt install python3 <br/>
@@ -17,6 +18,7 @@ pip3 install tk <br/>
 pip3 install pillow <br/>
 pip3 install psycopg2-binary <br/>
 sudo apt install python3-tk <br/>
+pip3 install pygame
 
 To run the program once dependencies are installed: <br/>
 python3 main.py

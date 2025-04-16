@@ -15,7 +15,7 @@ class ActionScreen:
         self.width= self.parent.winfo_screenwidth() 
         self.height= self.parent.winfo_screenheight()
         #setting tkinter window size
-        self.parent.geometry("%dx%d" % (1000, 800))  
+        self.parent.geometry("%dx%d" % (self.width, self.height))  
         self.parent.config(bg = 'black')
 
         self.comms = comms
@@ -46,25 +46,6 @@ class ActionScreen:
         self.red_team_frame.pack(side=tk.LEFT, padx=(0, 10)) # slight gap between columns
         self.red_team_score_frame = tk.Frame(self.red_team_container, bg = 'black') 
         self.red_team_score_frame.pack(side=tk.LEFT)
-
-
-        self.green_team_container = tk.Frame(self.parent, highlightbackground="green", highlightthickness=2, bg = 'black')
-        self.green_team_container.pack(side=tk.RIGHT, padx=20, pady=20)
-
-        self.green_team_label = tk.Label(self.green_team_container, text="Green Team", font=("Helvetica", 16, "bold"), fg="green", bg = 'black')
-        self.green_team_label.pack()
-
-        self.green_team_total_score_label = tk.Label(self.green_team_container, text="Total Score: ", font=("Helvetica", 8, "normal"), fg="green", bg = 'black')
-        self.green_team_total_score_label.pack()
-        self.green_team_total_score = tk.Entry(self.green_team_container, width = 15)
-        self.green_team_total_score.insert(0, "0")
-        self.green_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
-        self.green_team_total_score.pack(pady = 10)
-
-        self.green_team_frame = tk.Frame(self.green_team_container, bg = 'black') # make it so that each box and frame are contained in another frame
-        self.green_team_frame.pack(side=tk.LEFT, padx=(10, 0)) # slight gap between columns
-        self.green_team_score_frame = tk.Frame(self.green_team_container, bg = 'black') 
-        self.green_team_score_frame.pack(side=tk.LEFT)
 
 
         self.green_team_container = tk.Frame(self.parent, highlightbackground="green", highlightthickness=2, bg = 'black')
@@ -161,6 +142,9 @@ class ActionScreen:
                 return p
 
     def countdown(self):
+        if self.remaining_time == 20:
+            print(f'Playing Audio: {self.remaining_time}')
+            playAudio()
         if self.is_running and self.remaining_time > 0:
             minutes, seconds = divmod(self.remaining_time, 60)
             self.time_label.config(text=f"Time Remaining: {minutes:02}:{seconds:02}")
@@ -171,7 +155,7 @@ class ActionScreen:
             self.parent.after(2000, lambda: print("Starting game_Timer now..."))
             self.parent.after(2000, self.game_Timer)
             self.parent.after(2000, self.comms.sendStart)
-            self.parent.after(2000, playAudio)
+            #self.parent.after(2000, playAudio)
 
             
 
@@ -288,5 +272,7 @@ class ActionScreen:
 
         self.parent.mainloop()
     def destroy(self):
-        self.parent.destroy
+        stopAudio()
+        self.parent.destroy()
+
 
