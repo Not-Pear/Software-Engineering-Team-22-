@@ -126,6 +126,9 @@ class ActionScreen:
 
         self.red_total_score = 0
         self.green_total_score = 0
+        self.leading_team = None
+        self.flash_thick = 2  
+
 
     def testAutoScrollTxtBox(self):
         global count
@@ -225,15 +228,51 @@ class ActionScreen:
             self.green_team_total_score.insert(0, self.green_total_score)
             self.green_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
 
+
+
+
+    def getHigherTeam(self):
+        print("start if getHigher")
+
+        # self.red_team_container.config(highlightbackground="red", highlightthickness = 2)
+        # self.green_team_container.config(highlightbackground="green", highlightthickness = 2)
+        if self.flash_thick == 2:
+            self.flash_thick = 6
+        else:
+            self.flash_thick = 2
+
+        if self.red_total_score > self.green_total_score:
+            print("red is greater")
+            self.red_team_container.config(highlightbackground="#f60d0d", highlightthickness = self.flash_thick)
+
+            self.parent.after(500, self.getHigherTeam)
+            return
+        elif self.green_total_score > self.red_total_score:
+            print("green is greater")
+            self.green_team_container.config(highlightbackground="#4ed526", highlightthickness = self.flash_thick)
+            self.parent.after(500, self.getHigherTeam)
+            return
+        else:
+            # Tie condition
+            print("tie condition")
+            self.red_team_container.config(highlightbackground="red", highlightthickness = 2)
+            self.green_team_container.config(highlightbackground="green", highlightthickness = 2)
+            self.parent.after(500, self.getHigherTeam)
+            return
+
     def run(self):
         self.testAutoScrollTxtBox()
         self.countdown()
 
         #testing 
-        self.parent.after(4000, lambda: self.update_scores("red", 10))
-        self.parent.after(4000, lambda: self.update_scores("green", 10))
-        self.parent.after(10000, lambda: self.update_scores("red", 20))
-        self.parent.after(10000, lambda: self.update_scores("green", 40))
+        self.getHigherTeam()
+        # self.parent.after(4000, lambda: self.update_scores("red", 20))
+        # self.parent.after(4000, lambda: self.update_scores("green", 10))
+        # #self.parent.after(4000, lambda: self.getHigherTeam())
+
+        # self.parent.after(10000, lambda: self.update_scores("red", 20))
+        # self.parent.after(10000, lambda: self.update_scores("green", 40))
+        #self.parent.after(10000, lambda: self.getHigherTeam())
 
 
 
