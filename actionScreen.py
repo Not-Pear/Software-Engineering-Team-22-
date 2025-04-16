@@ -48,6 +48,23 @@ class ActionScreen:
         self.red_team_score_frame.pack(side=tk.LEFT)
 
 
+        self.green_team_container = tk.Frame(self.parent, highlightbackground="green", highlightthickness=2, bg = 'black')
+        self.green_team_container.pack(side=tk.RIGHT, padx=20, pady=20)
+
+        self.green_team_label = tk.Label(self.green_team_container, text="Green Team", font=("Helvetica", 16, "bold"), fg="green", bg = 'black')
+        self.green_team_label.pack()
+
+        self.green_team_total_score_label = tk.Label(self.green_team_container, text="Total Score: ", font=("Helvetica", 8, "normal"), fg="green", bg = 'black')
+        self.green_team_total_score_label.pack()
+        self.green_team_total_score = tk.Entry(self.green_team_container, width = 15)
+        self.green_team_total_score.insert(0, "0")
+        self.green_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
+        self.green_team_total_score.pack(pady = 10)
+
+        self.green_team_frame = tk.Frame(self.green_team_container, bg = 'black') # make it so that each box and frame are contained in another frame
+        self.green_team_frame.pack(side=tk.LEFT, padx=(10, 0)) # slight gap between columns
+        self.green_team_score_frame = tk.Frame(self.green_team_container, bg = 'black') 
+        self.green_team_score_frame.pack(side=tk.LEFT)
 
 
         self.green_team_container = tk.Frame(self.parent, highlightbackground="green", highlightthickness=2, bg = 'black')
@@ -70,8 +87,8 @@ class ActionScreen:
 
 
 
+
         self.green_text_boxes = {}
-        self.test_teams = ["Bob", "Jimbob", "Jimmybimbob"]
 
         for i in range(15):
             self.green_player_score_label = tk.Label(self.green_team_score_frame, text=f"Score:", fg = "green", bg = 'black')
@@ -87,7 +104,7 @@ class ActionScreen:
             self.green_textbox_codename.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
 
             self.green_text_boxes[i] = (self.green_textbox_codename, self.green_textbox_scores)   #Codename, score
-        
+
 
         # self.red_team_label = tk.Label(self.red_team_frame, text=f"Red Team:", fg = "red")
         # self.red_team_label.pack(padx=20, pady=20)
@@ -119,16 +136,17 @@ class ActionScreen:
         #make end button
         self.endgame = tk.Button(self.parent, text="END GAME", command=self.destroy)  
         self.endgame.pack(side = tk.BOTTOM, pady=(10,0))
+
         self.time_label = tk.Label(self.parent, text="00:00", font=("Helvetica", 15), fg = 'white', bg = 'black')
         self.time_label.pack(side = tk.BOTTOM, pady=5)
 
         self.count = 0
         self.players = players
-        
+
         self.red_total_score = 0
         self.green_total_score = 0
-
-      
+        self.leading_team = None
+        self.flash_thick = 2  
 
     def testAutoScrollTxtBox(self):
         global count
@@ -229,11 +247,46 @@ class ActionScreen:
             self.green_team_total_score.insert(0, self.green_total_score)
             self.green_team_total_score.config(state = "disabled", disabledbackground = "white", disabledforeground = "black")
 
+
+
+
+    def getHigherTeam(self):
+
+        self.red_team_container.config(highlightbackground="red", highlightthickness = 2)
+        self.green_team_container.config(highlightbackground="green", highlightthickness = 2)
+
+        if self.flash_thick == 2:
+            self.flash_thick = 6
+        else:
+            self.flash_thick = 2
+
+        if self.red_total_score > self.green_total_score:
+            self.red_team_container.config(highlightbackground="#f60d0d", highlightthickness = self.flash_thick)
+
+            self.parent.after(500, self.getHigherTeam)
+            return
+        elif self.green_total_score > self.red_total_score:
+            self.green_team_container.config(highlightbackground="#4ed526", highlightthickness = self.flash_thick)
+            self.parent.after(500, self.getHigherTeam)
+            return
+        else:
+            # Tie condition
+            self.red_team_container.config(highlightbackground="red", highlightthickness = 2)
+            self.green_team_container.config(highlightbackground="green", highlightthickness = 2)
+            self.parent.after(500, self.getHigherTeam)
+            return
+
     def run(self):
         self.testAutoScrollTxtBox()
         self.countdown()
-        self.parent.mainloop()
+        self.getHigherTeam()
 
+
+
+
+
+
+        self.parent.mainloop()
     def destroy(self):
-        self.parent.destroy()  
+        self.parent.destroy
 

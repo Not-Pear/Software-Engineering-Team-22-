@@ -6,21 +6,21 @@ def chooseAudio():
     number = random.randint(0,7)
     soundFile = "" 
     if number == 0: 
-        soundFile = "Track01.mp3"
+        soundFile = "gamesounds1/Track01.mp3"
     elif number == 1: 
-        soundFile = "Track02.mp3"
+        soundFile = "gamesounds1/Track02.mp3"
     elif number == 2: 
-        soundFile = "Track03.mp3"
+        soundFile = "gamesounds1/Track03.mp3"
     elif number == 3: 
-        soundFile = "Track04.mp3"
+        soundFile = "gamesounds1/Track04.mp3"
     elif number == 4: 
-        soundFile = "Track05.mp3"
+        soundFile = "gamesounds1/Track05.mp3"
     elif number == 5: 
-        soundFile = "Track06.mp3"
+        soundFile = "gamesounds1/Track06.mp3"
     elif number == 6: 
-        soundFile = "Track07.mp3"
+        soundFile = "gamesounds1/Track07.mp3"
     elif number == 7: 
-        soundFile = "Track08.mp3"
+        soundFile = "gamesounds1/Track08.mp3"
     else: 
         print("Unknown command, please try again") 
 

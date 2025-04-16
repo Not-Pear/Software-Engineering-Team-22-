@@ -168,16 +168,18 @@ def start(comms):
         print("Clearing screen")
     #starting action screen 
     def startActionScreen():
-        actionScreen = ActionScreen(60, comms)
+        actionScreen = ActionScreen(2, 30, comms, players)
         redCounter = 0
         greenCounter = 0
 
         for player in players:
             if player.getTeam() == "red":
-                actionScreen.update_entries(player.getTeam(), redCounter, player.getCodeName(), player.getPoints())
+                actionScreen.update_entries(player.getTeam(), redCounter, player.getCodeName(), player.getPoints(), False)
+                player.setPlayerNum(redCounter)
                 redCounter+=1
             if player.getTeam() == "green":
-                actionScreen.update_entries(player.getTeam(), greenCounter, player.getCodeName(), player.getPoints())
+                actionScreen.update_entries(player.getTeam(), greenCounter, player.getCodeName(), player.getPoints(), False)
+                player.setPlayerNum(greenCounter)
                 greenCounter+=1
         actionScreen.run()
     #window for changing the ip address 

@@ -5,6 +5,7 @@ class Player:
 		self.equipmentid= equipmentid
 		self.points = points
 		self.team = None
+		self.playerNum = None
 		
 	def getId(self):
 		return self.id
@@ -20,6 +21,9 @@ class Player:
 
 	def getTeam(self):
 		return self.team
+	
+	def getPlayerNum(self):
+		return self.playerNum
 
 	def setCodeName(self, codename):
 		self.codename = codename
@@ -32,3 +36,6 @@ class Player:
 
 	def setTeam(self, team):
 		self.team = team
+
+	def setPlayerNum(self, num):
+		self.playerNum = num
