@@ -263,16 +263,8 @@ class ActionScreen:
     def run(self):
         self.testAutoScrollTxtBox()
         self.countdown()
-
-        #testing 
         self.getHigherTeam()
-        # self.parent.after(4000, lambda: self.update_scores("red", 20))
-        # self.parent.after(4000, lambda: self.update_scores("green", 10))
-        # #self.parent.after(4000, lambda: self.getHigherTeam())
 
-        # self.parent.after(10000, lambda: self.update_scores("red", 20))
-        # self.parent.after(10000, lambda: self.update_scores("green", 40))
-        #self.parent.after(10000, lambda: self.getHigherTeam())
 
 
 
